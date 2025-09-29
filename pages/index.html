@@ -1,284 +1,131 @@
-<!-- @format -->
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../style/style.css" />
-
-    <title>Doctoria</title>
-  </head>
-  <body>
-    <header class="header display-flex roboto-font">
-      <img src="../assets/DOCTORIA.gif" alt="" />
-      <div class="navlink">
-        <ul class="navbar-link">
-          <li > <a href="http://">HOME</a></li>
-          <li><a href="http://">ABOUT</a></li>
-          <li><a href="http://">ALL DOCTORS</a></li>
-          <li><a href="http://">CONTACT</a></li>
-        </ul>
-      </div>
-      <button type="button" class="btn-primary">Create Account</button>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctoria - Book Appointments with Trusted Doctors</title>
+    <link rel="stylesheet" href="../style/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <img src="../assets/DOCTORIA.gif" alt="Doctoria Logo" style="width: 130px;">
+        <nav>
+            <ul class="navbar-link" id="navMenu">
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#about">ABOUT</a></li>
+                <li><a href="#doctors">ALL DOCTORS</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+            </ul>
+        </nav>
+        <button class="btn-primary" onclick="openModal('signup')">Create Account</button>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
     </header>
 
-    <hr />
-
-    <main>
-      <!----------------- Hero Section ----------------->
-      <section>
-        <div class="hero-section">
-          <div class="hero-content">
-            <h1 class="inter-font hero-tittle">
-              Book Apointment With Trusted Doctor
-            </h1>
-
-            <img
-              class="hero-img"
-              src="../assets/assets/assets_frontend/group_profiles.png"
-              alt="group_profiles"
-            />
-            <p class="hero-description">
-              Simply browse through our extensive list of trusted doctors,
-              schedule your apointment hassle-free.
-            </p>
-            <button type="button" class="btn-primary">Book Apointment</button>
-          </div>
-          <div class="header-image">
-            <img
-              src="../assets/assets/assets_frontend/header_img.png"
-              alt="header img "
-            />
-          </div>
+    <!-- Hero Section -->
+    <section class="hero-section" id="home">
+        <div class="hero-content">
+            <h1>Book Appointment With Trusted Doctors</h1>
+            <div class="hero-profiles">
+                <img src="../assets/assets/assets_frontend/group_profiles.png" alt="Group Profiles" style="width: 130px; height: auto;">
+            </div>
+            <p>Simply browse through our extensive list of trusted doctors and schedule your appointment hassle-free.</p>
+            <button class="btn-primary" onclick="scrollToSection('doctors')">Book Appointment</button>
         </div>
-      </section>
-
-      <!---------------- Speciality section ---------------->
-      <section class="speciality-section">
-        <div class="Speciality-content roboto-font">
-          <h1>Find by Speciality</h1>
-          <p>
-            Simply browse through our extensive list of trusted doctors,
-            schedule your apointment hassle-free.
-          </p>
+        <div class="header-image">
+            <img src="../assets/assets/assets_frontend/header_img.png" alt="Doctor Illustration">
         </div>
-        <div class="all-card display-flex">
-          <div class="small-card">
-            <img
-              src="../assets/assets/assets_frontend/Gastroenterologist.svg"
-              alt=""
-            />
-            <p>Gastroenterologist</p>
-          </div>
-          <div class="small-card">
-            <img
-              src="../assets/assets/assets_frontend/General_physician.svg"
-              alt=""
-            />
-            <p>General physician</p>
-          </div>
-          <div class="small-card">
-            <img
-              src="../assets/assets/assets_frontend/Dermatologist.svg"
-              alt=""
-            />
-            <p>Dermatologist</p>
-          </div>
-          <div class="small-card">
-            <img
-              src="../assets/assets/assets_frontend/Gynecologist.svg"
-              alt=""
-            />
-            <p>Gynecologist</p>
-          </div>
-          <div class="small-card">
-            <img
-              src="../assets/assets/assets_frontend/Neurologist.svg"
-              alt=""
-            />
-            <p>Neurologist</p>
-          </div>
-          <div class="small-card">
-            <img
-              src="../assets/assets/assets_frontend/pediatricians.svg"
-              alt=""
-            />
-            <p>pediatricians</p>
-          </div>
+    </section>
+
+    <!-- Specialty Section -->
+    <section class="speciality-section" id="about">
+        <h2 class="section-title">Find by Specialty</h2>
+        <p class="section-description">Simply browse through our extensive list of trusted doctors and schedule your appointment hassle-free.</p>
+        
+        <div class="specialty-grid">
+            <div class="specialty-card" onclick="filterDoctors('Gastroenterologist')">
+                <img src="../assets/assets/assets_frontend/Gastroenterologist.svg" alt="Gastroenterologist">
+                <p>Gastroenterologist</p>
+            </div>
+            <div class="specialty-card" onclick="filterDoctors('General physician')">
+                <img src="../assets/assets/assets_frontend/General_physician.svg" alt="General physician">
+                <p>General Physician</p>
+            </div>
+            <div class="specialty-card" onclick="filterDoctors('Dermatologist')">
+                <img src="../assets/assets/assets_frontend/Dermatologist.svg" alt="Dermatologist">
+                <p>Dermatologist</p>
+            </div>
+            <div class="specialty-card" onclick="filterDoctors('Gynecologist')">
+                <img src="../assets/assets/assets_frontend/Gynecologist.svg" alt="Gynecologist">
+                <p>Gynecologist</p>
+            </div>
+            <div class="specialty-card" onclick="filterDoctors('Neurologist')">
+                <img src="../assets/assets/assets_frontend/Neurologist.svg" alt="Neurologist">
+                <p>Neurologist</p>
+            </div>
+            <div class="specialty-card" onclick="filterDoctors('Pediatrician')">
+                <img src="../assets/assets/assets_frontend/Pediatricians.svg" alt="Pediatrician">
+                <p>Pediatrician</p>
+            </div>
         </div>
-      </section>
+    </section>
 
-      <!---------------- Top Doctor Section --------------->
-      <section class="top-doctor-section roboto-font">
-        <h1 class="top-doctor-tittle">Top Doctors to Book</h1>
-        <p class="top-doctor-description">
-          Simply browse through our extensive list of trusted doctors.
-        </p>
-        <div class="doctor-cards">
-          <div class="doctor-card">
-            <img
-              class="card-img"
-              src="../assets/assets/assets_frontend/doc1.png"
-              alt=""
-            />
-            <p class="cards-text">Active</p>
-            <h3 class="cards-text cards-tittle">Dr. Richard James</h3>
-            <p class="cards-text">General physician</p>
-          </div>
-
-          <div class="doctor-card">
-            <img
-              class="card-img"
-              src="../assets/assets/assets_frontend/doc2.png"
-              alt=""
-            />
-            <p class="cards-text">Active</p>
-            <h3 class="cards-text cards-tittle">Dr. Richard James</h3>
-            <p class="cards-text">General physician</p>
-          </div>
-
-          <div class="doctor-card">
-            <img
-              class="card-img"
-              src="../assets/assets/assets_frontend/doc3.png"
-              alt=""
-            />
-            <p class="cards-text">Active</p>
-            <h3 class="cards-text cards-tittle">Dr. Richard James</h3>
-            <p class="cards-text">General physician</p>
-          </div>
-
-          <div class="doctor-card">
-            <img
-              class="card-img"
-              src="../assets/assets/assets_frontend/doc4.png"
-              alt=""
-            />
-            <p class="cards-text">Active</p>
-            <h3 class="cards-text+ cards-tittle">Dr. Richard James</h3>
-            <p class="cards-text">General physician</p>
-          </div>
-
-          <div class="doctor-card">
-            <img
-              class="card-img"
-              src="../assets/assets/assets_frontend/doc5.png"
-              alt=""
-            />
-            <p class="cards-text">Active</p>
-            <h3 class="cards-text cards-tittle">Dr. Richard James</h3>
-            <p class="cards-text">General physician</p>
-          </div>
-
-          <div class="doctor-card">
-            <img
-              class="card-img"
-              src="../assets/assets/assets_frontend/doc6.png"
-              alt=""
-            />
-            <p class="cards-text">Active</p>
-            <h3 class="cards-text cards-tittle">Dr. Richard James</h3>
-            <p class="cards-text">General physician</p>
-          </div>
-
-          <div class="doctor-card">
-            <img
-              class="card-img"
-              src="../assets/assets/assets_frontend/doc7.png"
-              alt=""
-            />
-            <p class="cards-text">Active</p>
-            <h3 class="cards-text cards-tittle">Dr. Richard James</h3>
-            <p class="cards-text">General physician</p>
-          </div>
-
-          <div class="doctor-card">
-            <img
-              class="card-img"
-              src="../assets/assets/assets_frontend/doc8.png"
-              alt=""
-            />
-            <p class="cards-text">Active</p>
-            <h3 class="cards-text cards-tittle">Dr. Richard James</h3>
-            <p class="cards-text">General physician</p>
-          </div>
-
-          <div class="doctor-card">
-            <img
-              class="card-img"
-              src="../assets/assets/assets_frontend/doc9.png"
-              alt=""
-            />
-            <p class="cards-text">Active</p>
-            <h3 class="cards-text cards-tittle">Dr. Richard James</h3>
-            <p class="cards-text">General physician</p>
-          </div>
-
-          <div class="doctor-card">
-            <img
-              class="card-img"
-              src="../assets/assets/assets_frontend/doc10.png"
-              alt=""
-            />
-            <p class="cards-text">Active</p>
-            <h3 class="cards-text cards-tittle">Dr. Richard James</h3>
-            <p class="cards-text">General physician</p>
-          </div>
+    <!-- Top Doctors Section -->
+    <section class="top-doctor-section" id="doctors">
+        <h2 class="section-title">Top Doctors to Book</h2>
+        <p class="section-description">Simply browse through our extensive list of trusted doctors.</p>
+        
+        <div class="doctor-grid" id="doctorGrid">
+            <!-- Doctors will be dynamically loaded -->
         </div>
-        <div class="btn1">
-          <button class="btn-primary top-doctor-btn" type="button">
-            See More
-          </button>
-        </div>
-      </section>
 
-      <!---------------- create Doctor Section --------------->
+        <div class="btn-center">
+            <button class="btn-primary" onclick="loadMoreDoctors()">See More</button>
+        </div>
+    </section>
 
-      <section class="roboto-font">
-        <div class="apt-section">
-          <div class="apt-content">
-            <h1 class="apt-tittle">
-              Book Appointment With 100+ Trusted Doctors
-            </h1>
-            <button class="btn-primary btn2">Create Account</button>
-          </div>
-          <div>
-            <img
-              class="apt-img"
-              src="../assets/assets/assets_frontend/appointment_img.png"
-              alt=""
-            />
-          </div>
+    <!-- Appointment Banner -->
+    <section class="appointment-banner">
+        <div class="appointment-content">
+            <h2>Book Appointment With 100+ Trusted Doctors</h2>
+            <button class="btn-primary" onclick="openModal('signup')">Create Account</button>
         </div>
-      </section>
-    </main>
-    <hr />
-    <footer>
-      <div class="footer-section roboto-font">
-        <div class="footer-content">
-          <h1>DOCTORIA</h1>
-          <p class="footer-description">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt quos temporibus illum velit voluptatum possimus corrupti error exercitationem laudantium, quae veniam a deserunt odio impedit, praesentium non ipsam qui sit.
-          </p>
+        <div class="appointment-image">
+            <img src="../assets/assets/assets_frontend/appointment_img.png" alt="Appointment">
         </div>
-        <div class="footer-content footer-text">
-          <h1>COMPANY</h1>
-          <ul>
-            <li><a href="">Home</a></li>
-            <li><a href="">About Us</a></li>
-            <li><a href="">Contact US</a></li>
-            <li><a href="">Privacy Policy</a></li>
-          </ul>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+        <div class="footer-grid">
+            <div>
+                <h3 class="footer-title">DOCTORIA</h3>
+                <p class="footer-description">
+                    Your trusted platform for connecting with healthcare professionals. We provide easy access to qualified doctors across various specialties, ensuring quality healthcare for everyone.
+                </p>
+            </div>
+            <div>
+                <h3 class="footer-title">COMPANY</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="footer-title">GET IN TOUCH</h3>
+                <p class="footer-description">
+                    01940599789<br>
+                    misternaimur@gmail.com
+                </p>
+            </div>
         </div>
-        <div class="footer-content footer-text">
-          <h1>GET IN TOUCH</h1>
-          <p>01940599789</p>
-          <p>misternaimur@gmail.com</p>
+        <div class="footer-copy">
+            Copyright © 2025 Naimur Shakib Noman - All Rights Reserved
         </div>
-      </div>
     </footer>
-    <hr />
-    <p class="footer-copy roboto-font">Copyright &copy; 2025 Naimur Shakib Noman - All Right Reserved</p>
-  </body>
+
+    <script src="../js/main.js"></script>
+</body>
 </html>
