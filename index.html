@@ -1,12 +1,132 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="refresh" content="0; url=/pages/index.html" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Redirecting — Doctoria</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctoria - Book Appointments with Trusted Doctors</title>
+  <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-  <p>Redirecting to the site — if you are not redirected automatically, <a href="/pages/index.html">click here</a>.</p>
+  <!-- Header -->
+  <header class="header">
+    <img src="assets/DOCTORIA.gif" alt="Doctoria Logo" style="width: 130px;">
+    <nav>
+      <ul class="navbar-link" id="navMenu">
+        <li><a href="#home">HOME</a></li>
+        <li><a href="#about">ABOUT</a></li>
+        <li><a href="pages/doctors.html">ALL DOCTORS</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+      </ul>
+    </nav>
+    <div id="userMenu"></div>
+    <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" id="home">
+    <div class="hero-content">
+      <h1>Book Appointment With Trusted Doctors</h1>
+      <div class="hero-profiles">
+        <img src="assets/assets/assets_frontend/group_profiles.png" alt="Group Profiles" style="width: 130px; height: auto;">
+      </div>
+      <p>Simply browse through our extensive list of trusted doctors and schedule your appointment hassle-free.</p>
+      <button class="btn-primary" onclick="location.href='pages/doctors.html'">Book Appointment</button>
+    </div>
+    <div class="header-image">
+      <img src="assets/assets/assets_frontend/header_img.png" alt="Doctor Illustration">
+    </div>
+  </section>
+
+  <!-- Specialty Section -->
+  <section class="speciality-section" id="about">
+    <h2 class="section-title">Find by Specialty</h2>
+    <p class="section-description">Simply browse through our extensive list of trusted doctors and schedule your appointment hassle-free.</p>
+        
+    <div class="specialty-grid">
+      <div class="specialty-card" onclick="filterDoctors('Gastroenterologist')">
+        <img src="assets/assets/assets_frontend/Gastroenterologist.svg" alt="Gastroenterologist">
+        <p>Gastroenterologist</p>
+      </div>
+      <div class="specialty-card" onclick="filterDoctors('General physician')">
+        <img src="assets/assets/assets_frontend/General_physician.svg" alt="General physician">
+        <p>General Physician</p>
+      </div>
+      <div class="specialty-card" onclick="filterDoctors('Dermatologist')">
+        <img src="assets/assets/assets_frontend/Dermatologist.svg" alt="Dermatologist">
+        <p>Dermatologist</p>
+      </div>
+      <div class="specialty-card" onclick="filterDoctors('Gynecologist')">
+        <img src="assets/assets/assets_frontend/Gynecologist.svg" alt="Gynecologist">
+        <p>Gynecologist</p>
+      </div>
+      <div class="specialty-card" onclick="filterDoctors('Neurologist')">
+        <img src="assets/assets/assets_frontend/Neurologist.svg" alt="Neurologist">
+        <p>Neurologist</p>
+      </div>
+      <div class="specialty-card" onclick="filterDoctors('Pediatrician')">
+        <img src="assets/assets/assets_frontend/Pediatricians.svg" alt="Pediatrician">
+        <p>Pediatrician</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Top Doctors Section -->
+  <section class="top-doctor-section" id="doctors">
+    <h2 class="section-title">Top Doctors to Book</h2>
+    <p class="section-description">Simply browse through our extensive list of trusted doctors.</p>
+        
+    <div class="doctor-grid" id="doctorGrid">
+      <!-- Doctors will be dynamically loaded -->
+    </div>
+
+    <div class="btn-center">
+      <button class="btn-primary" onclick="loadMoreDoctors()">See More</button>
+    </div>
+  </section>
+
+  <!-- Appointment Banner -->
+  <section class="appointment-banner">
+    <div class="appointment-content">
+      <h2>Book Appointment With 100+ Trusted Doctors</h2>
+      <button class="btn-primary" onclick="location.href='pages/login.html'">Create Account</button>
+    </div>
+    <div class="appointment-image">
+      <img src="assets/assets/assets_frontend/appointment_img.png" alt="Appointment">
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" id="contact">
+    <div class="footer-grid">
+      <div>
+        <h3 class="footer-title">DOCTORIA</h3>
+        <p class="footer-description">
+          Your trusted platform for connecting with healthcare professionals. We provide easy access to qualified doctors across various specialties, ensuring quality healthcare for everyone.
+        </p>
+      </div>
+      <div>
+        <h3 class="footer-title">COMPANY</h3>
+        <ul class="footer-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="footer-title">GET IN TOUCH</h3>
+        <p class="footer-description">
+          01940599789<br>
+          misternaimur@gmail.com
+        </p>
+      </div>
+    </div>
+    <div class="footer-copy">
+      Copyright © 2025 Naimur Shakib Noman - All Rights Reserved
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

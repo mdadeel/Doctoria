@@ -8,7 +8,7 @@
         async function fetchDoctors() {
             if (ALL_DOCTORS.length) return ALL_DOCTORS;
             try {
-                const res = await fetch('../data/doctors.json');
+                const res = await fetch('/data/doctors.json');
                 const data = await res.json();
                 ALL_DOCTORS = data;
                 return ALL_DOCTORS;
@@ -60,7 +60,7 @@
             }
             searchEl.addEventListener('input', applyFilters);
             specEl.addEventListener('change', applyFilters);
-            if (clearBtn) clearBtn.addEventListener('click', () => { searchEl.value=''; specEl.value=''; applyFilters(); history.replaceState({}, '', 'doctors.html'); });
+            if (clearBtn) clearBtn.addEventListener('click', () => { searchEl.value=''; specEl.value=''; applyFilters(); history.replaceState({}, '', '/pages/doctors.html'); });
         }
 
         function renderDoctorGrid(){
@@ -102,14 +102,14 @@
 
         // Filter doctors by specialty -> navigate to doctors page with filter
         function filterDoctors(specialty) {
-            const url = new URL(location.origin + location.pathname.replace(/[^/]+$/, 'doctors.html'));
+            const url = new URL(location.origin + '/pages/doctors.html');
             url.searchParams.set('specialty', specialty);
             location.href = url.toString();
         }
 
         // Go to doctor details page
         function goToDoctor(doctorId){
-            const url = new URL(location.origin + location.pathname.replace(/[^/]+$/, 'doctor.html'));
+            const url = new URL(location.origin + '/pages/doctor.html');
             url.searchParams.set('doctorId', doctorId);
             location.href = url.toString();
         }
@@ -120,9 +120,15 @@
             renderDoctorGrid();
         }
 
+        function loginPath(){
+            return location.pathname.includes('/pages/') ? 'login.html' : 'pages/login.html';
+        }
+        function adminLoginPath(){
+            return location.pathname.includes('/pages/') ? 'admin/index.html' : 'pages/admin/index.html';
+        }
         // Open login/register page
         function openModal(type) {
-            location.href = 'login.html';
+            location.href = loginPath();
         }
 
         // Close menu on link click (mobile)
@@ -156,7 +162,7 @@
             if (!mount) return;
             const u = DOCTORIA_AUTH.getCurrentUser ? DOCTORIA_AUTH.getCurrentUser() : null;
             if (!u){
-                mount.innerHTML = `<button class="btn-primary" onclick="location.href='login.html'">Create Account</button>`;
+                mount.innerHTML = `<button class=\"btn-primary\" onclick=\"location.href='${loginPath()}'\">Create Account</button>`;
                 return;
             }
             const initials = (u.name || u.email || 'U').trim().split(' ').map(s=>s[0]).join('').slice(0,2).toUpperCase();
@@ -184,9 +190,8 @@
         }
         function headerLogout(){
             try { DOCTORIA_AUTH.logout(); } catch(e){}
-            const u = DOCTORIA_AUTH.getCurrentUser && DOCTORIA_AUTH.getCurrentUser();
-            const to = (u && u.role==='admin') ? 'admin/index.html' : 'login.html';
-            location.href = to;
+            // After logout, send to appropriate login page based on current path
+            location.href = loginPath();
         }
 
         // Expose needed functions globally
