@@ -14,11 +14,11 @@
             <ul class="navbar-link" id="navMenu">
                 <li><a href="#home">HOME</a></li>
                 <li><a href="#about">ABOUT</a></li>
-                <li><a href="#doctors">ALL DOCTORS</a></li>
+                <li><a href="doctors.html">ALL DOCTORS</a></li>
                 <li><a href="#contact">CONTACT</a></li>
             </ul>
         </nav>
-        <button class="btn-primary" onclick="openModal('signup')">Create Account</button>
+        <div id="userMenu"></div>
         <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
     </header>
 
@@ -30,7 +30,7 @@
                 <img src="../assets/assets/assets_frontend/group_profiles.png" alt="Group Profiles" style="width: 130px; height: auto;">
             </div>
             <p>Simply browse through our extensive list of trusted doctors and schedule your appointment hassle-free.</p>
-            <button class="btn-primary" onclick="scrollToSection('doctors')">Book Appointment</button>
+            <button class="btn-primary" onclick="location.href='doctors.html'">Book Appointment</button>
         </div>
         <div class="header-image">
             <img src="../assets/assets/assets_frontend/header_img.png" alt="Doctor Illustration">
@@ -88,7 +88,7 @@
     <section class="appointment-banner">
         <div class="appointment-content">
             <h2>Book Appointment With 100+ Trusted Doctors</h2>
-            <button class="btn-primary" onclick="openModal('signup')">Create Account</button>
+            <button class="btn-primary" onclick="location.href='login.html'">Create Account</button>
         </div>
         <div class="appointment-image">
             <img src="../assets/assets/assets_frontend/appointment_img.png" alt="Appointment">
@@ -126,6 +126,7 @@
         </div>
     </footer>
 
+    <script src="../js/auth.js"></script>
     <script src="../js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctoria - Login / Register</title>
+  <link rel="stylesheet" href="../style/style.css" />
+</head>
+<body>
+  <header class="header">
+    <img src="../assets/DOCTORIA.gif" alt="Doctoria Logo" style="width: 130px;" />
+    <nav>
+      <ul class="navbar-link" id="navMenu">
+        <li><a href="index.html#home">HOME</a></li>
+        <li><a href="index.html#about">ABOUT</a></li>
+        <li><a href="doctors.html">ALL DOCTORS</a></li>
+        <li><a href="index.html#contact">CONTACT</a></li>
+      </ul>
+    </nav>
+    <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+  </header>
+
+  <section class="auth-wrapper">
+    <div class="auth-left bg-animated fade-in-up">
+      <div class="auth-brand">
+        <img src="../assets/DOCTORIA.gif" alt="Doctoria" style="width:40px; border-radius:8px;" />
+        <span>Doctoria</span>
+      </div>
+      <img src="../assets/assets/assets_frontend/header_img.png" alt="Welcome" />
+    </div>
+    <div class="auth-right fade-in-up">
+      <div class="form-card">
+        <div class="tabs" style="margin-bottom:1rem;">
+          <button id="tab-login" class="tab active" onclick="switchTab('login')">Login</button>
+          <button id="tab-register" class="tab" onclick="switchTab('register')">Register</button>
+        </div>
+        <div id="login-panel">
+          <h3>Patient Login</h3>
+          <div id="login-msg" class="msg" style="display:none;"></div>
+          <div class="field">
+            <label>Email</label>
+            <input id="login-email" class="input" type="email" placeholder="you@example.com" />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input id="login-password" class="input" type="password" placeholder="••••••••" />
+          </div>
+          <div class="actions-row">
+            <button class="btn-primary" onclick="onLogin()">Login</button>
+            <a class="btn-secondary" href="admin/" title="Admin login">Admin</a>
+          </div>
+        </div>
+        <div id="register-panel" style="display:none;">
+          <h3>Create Patient Account</h3>
+          <div id="reg-msg" class="msg" style="display:none;"></div>
+          <div class="field">
+            <label>Name</label>
+            <input id="reg-name" class="input" type="text" placeholder="Your Name" />
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input id="reg-email" class="input" type="email" placeholder="you@example.com" />
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input id="reg-password" class="input" type="password" placeholder="Create a password" />
+          </div>
+          <div class="actions-row">
+            <button class="btn-primary" onclick="onRegister()">Create Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const u = DOCTORIA_AUTH.getCurrentUser && DOCTORIA_AUTH.getCurrentUser();
+      if (u){
+        const redir = DOCTORIA_AUTH.popRedirect && DOCTORIA_AUTH.popRedirect();
+        if (redir && u.role==='patient'){ location.href = redir; return; }
+        if (u.role === 'patient'){ location.href = 'patient-dashboard.html'; return; }
+        if (u.role === 'admin'){ location.href = 'admin-dashboard.html'; return; }
+      }
+    });
+    function showMsg(id, text, type){
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = 'msg ' + (type==='error' ? 'msg-error' : 'msg-success');
+      el.style.display = text ? 'block' : 'none';
+    }
+    function switchTab(which){
+      const lp = document.getElementById('login-panel');
+      const rp = document.getElementById('register-panel');
+      const tl = document.getElementById('tab-login');
+      const tr = document.getElementById('tab-register');
+      if (which === 'register'){
+        rp.style.display = 'block';
+        lp.style.display = 'none';
+        tr.classList.add('active');
+        tl.classList.remove('active');
+      } else {
+        rp.style.display = 'none';
+        lp.style.display = 'block';
+        tl.classList.add('active');
+        tr.classList.remove('active');
+      }
+    }
+
+    async function onLogin(){
+      showMsg('login-msg','', '');
+      const role = 'patient';
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+      if (!email || !password){ showMsg('login-msg','Please enter email and password','error'); return; }
+      try {
+        DOCTORIA_AUTH.login({email, password, role});
+        showMsg('login-msg','Login successful. Redirecting...','success');
+        setTimeout(()=>{
+          const redir = DOCTORIA_AUTH.popRedirect();
+          if (redir){ location.href = redir; return; }
+          location.href = 'patient-dashboard.html';
+        }, 600);
+      } catch(e){ showMsg('login-msg', e.message || 'Login failed', 'error'); }
+    }
+    async function onRegister(){
+      showMsg('reg-msg','', '');
+      const role = 'patient';
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      const password = document.getElementById('reg-password').value.trim();
+      if (!name || !email || !password){ showMsg('reg-msg','Please fill all fields','error'); return; }
+      try {
+        DOCTORIA_AUTH.register({role, name, email, password});
+        showMsg('reg-msg','Account created. Redirecting to dashboard...','success');
+        setTimeout(()=>{ location.href = 'patient-dashboard.html'; }, 600);
+      } catch(e){ showMsg('reg-msg', e.message || 'Registration failed', 'error'); }
+    }
+  </script>
+</body>
+</html>

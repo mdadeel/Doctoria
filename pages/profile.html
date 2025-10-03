@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctoria - My Profile</title>
+  <link rel="stylesheet" href="../style/style.css" />
+</head>
+<body>
+  <header class="header">
+    <img src="../assets/DOCTORIA.gif" alt="Doctoria Logo" style="width: 130px;" />
+    <nav>
+      <ul class="navbar-link" id="navMenu">
+        <li><a href="index.html#home">HOME</a></li>
+        <li><a href="doctors.html">ALL DOCTORS</a></li>
+        <li><a href="appointment.html">BOOK</a></li>
+        <li><a href="patient-dashboard.html">DASHBOARD</a></li>
+      </ul>
+    </nav>
+    <div id="userMenu"></div>
+    <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+  </header>
+
+  <section class="speciality-section" style="padding-top:2rem;">
+    <h2 class="section-title">My Profile</h2>
+    <div class="specialty-grid" style="max-width:900px; margin:0 auto; grid-template-columns: 1fr 1fr;">
+      <div class="form-card">
+        <h3>Update Info</h3>
+        <div id="prof-msg" class="msg" style="display:none;"></div>
+        <div class="field">
+          <label>Name</label>
+          <input id="prof-name" class="input" type="text" />
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input id="prof-email" class="input" type="email" />
+        </div>
+        <div class="actions-row">
+          <button class="btn-primary" onclick="saveProfile()">Save Changes</button>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h3>Change Password</h3>
+        <div id="pwd-msg" class="msg" style="display:none;"></div>
+        <div class="field">
+          <label>Old Password</label>
+          <input id="pwd-old" class="input" type="password" />
+        </div>
+        <div class="field">
+          <label>New Password</label>
+          <input id="pwd-new" class="input" type="password" />
+        </div>
+        <div class="actions-row">
+          <button class="btn-primary" onclick="changePwd()">Change Password</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    DOCTORIA_AUTH.requireRole('patient');
+    function onLogout(){ DOCTORIA_AUTH.logout(); location.href = 'login.html'; }
+
+    function showMsg(id, text, type){
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = 'msg ' + (type==='error' ? 'msg-error' : 'msg-success');
+      el.style.display = text ? 'block' : 'none';
+    }
+
+    const u = DOCTORIA_AUTH.getCurrentUser();
+    document.getElementById('prof-name').value = u?.name || '';
+    document.getElementById('prof-email').value = u?.email || '';
+
+    function saveProfile(){
+      showMsg('prof-msg','', '');
+      const name = document.getElementById('prof-name').value.trim();
+      const email = document.getElementById('prof-email').value.trim();
+      if (!name || !email){ showMsg('prof-msg','Please fill out name and email','error'); return; }
+      try {
+        DOCTORIA_AUTH.updateProfile({name, email});
+        showMsg('prof-msg','Profile updated successfully','success');
+      } catch(e){ showMsg('prof-msg', e.message || 'Update failed','error'); }
+    }
+
+    function changePwd(){
+      showMsg('pwd-msg','', '');
+      const oldPassword = document.getElementById('pwd-old').value.trim();
+      const newPassword = document.getElementById('pwd-new').value.trim();
+      if (!oldPassword || !newPassword){ showMsg('pwd-msg','Please enter both passwords','error'); return; }
+      try {
+        DOCTORIA_AUTH.changePassword({oldPassword, newPassword});
+        showMsg('pwd-msg','Password changed successfully','success');
+        document.getElementById('pwd-old').value = '';
+        document.getElementById('pwd-new').value = '';
+      } catch(e){ showMsg('pwd-msg', e.message || 'Change password failed','error'); }
+    }
+  </script>
+</body>
+</html>

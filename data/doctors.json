@@ -1,0 +1,199 @@
+[
+  {
+    "id": "d1",
+    "name": "Dr. Richard James",
+    "specialty": "General Physician",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc1.png",
+    "location": "Chittagong",
+    "experience": 12,
+    "rating": 4.7,
+    "fees": 800,
+    "about": "Experienced General Physician focused on preventative care and patient well-being."
+  ,
+  "schedule": [
+    {"day":"Mon","slots":["09:00","11:00","15:00"]},
+    {"day":"Wed","slots":["10:00","12:00","16:00"]},
+    {"day":"Fri","slots":["09:30","13:00","17:00"]}
+  ]
+  },
+  {
+    "id": "d2",
+    "name": "Dr. Emily Watson",
+    "specialty": "Dermatologist",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc2.png",
+    "location": "Chittagong",
+    "experience": 9,
+    "rating": 4.6,
+    "fees": 1000,
+    "about": "Specialist in skin, hair, and nail disorders with modern treatment approaches."
+  ,
+  "schedule": [
+    {"day":"Tue","slots":["10:00","14:00"]},
+    {"day":"Thu","slots":["09:00","11:30","16:30"]}
+  ]
+  },
+  {
+    "id": "d3",
+    "name": "Dr. Michael Chen",
+    "specialty": "Neurologist",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc3.png",
+    "location": "Chittagong",
+    "experience": 14,
+    "rating": 4.8,
+    "fees": 1200,
+    "about": "Neurologist with expertise in headaches, epilepsy, and neurodegenerative diseases."
+  ,
+  "schedule": [
+    {"day":"Mon","slots":["08:30","12:30"]},
+    {"day":"Thu","slots":["10:30","13:30","18:00"]},
+    {"day":"Sat","slots":["09:00","11:00"]}
+  ]
+  },
+  {
+    "id": "d4",
+    "name": "Dr. Sarah Johnson",
+    "specialty": "Gynecologist",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc4.png",
+    "location": "Chittagong",
+    "experience": 11,
+    "rating": 4.7,
+    "fees": 900,
+    "about": "Provides comprehensive care in women's health and reproductive medicine."
+  },
+  {
+    "id": "d5",
+    "name": "Dr. David Miller",
+    "specialty": "Pediatrician",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc5.png",
+    "location": "Chittagong",
+    "experience": 10,
+    "rating": 4.5,
+    "fees": 700,
+    "about": "Pediatrician dedicated to child health from infancy through adolescence."
+  },
+  {
+    "id": "d6",
+    "name": "Dr. Lisa Anderson",
+    "specialty": "Gastroenterologist",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc6.png",
+    "location": "Chittagong",
+    "experience": 13,
+    "rating": 4.6,
+    "fees": 1100,
+    "about": "Expert in digestive health, liver diseases, and endoscopic procedures."
+  },
+  {
+    "id": "d7",
+    "name": "Dr. James Wilson",
+    "specialty": "General Physician",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc7.png",
+    "location": "Chittagong",
+    "experience": 8,
+    "rating": 4.3,
+    "fees": 600,
+    "about": "General practitioner with a holistic approach to patient care."
+  },
+  {
+    "id": "d8",
+    "name": "Dr. Maria Garcia",
+    "specialty": "Dermatologist",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc8.png",
+    "location": "Chittagong",
+    "experience": 7,
+    "rating": 4.4,
+    "fees": 950,
+    "about": "Focus on cosmetic dermatology and minimally invasive procedures."
+  },
+  {
+    "id": "d9",
+    "name": "Dr. Robert Taylor",
+    "specialty": "Neurologist",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc9.png",
+    "location": "Chittagong",
+    "experience": 15,
+    "rating": 4.9,
+    "fees": 1300,
+    "about": "Special interest in stroke care and neurorehabilitation."
+  },
+  {
+    "id": "d10",
+    "name": "Dr. Jennifer Lee",
+    "specialty": "Pediatrician",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc10.png",
+    "location": "Chittagong",
+    "experience": 6,
+    "rating": 4.2,
+    "fees": 650,
+    "about": "Caring pediatrician with focus on preventive pediatrics and vaccinations."
+  },
+  {
+    "id": "d11",
+    "name": "Dr. Arif Rahman",
+    "specialty": "Gastroenterologist",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc11.png",
+    "location": "Chittagong",
+    "experience": 10,
+    "rating": 4.5,
+    "fees": 1000,
+    "about": "Treats GERD, IBS, IBD with evidence-based protocols."
+  },
+  {
+    "id": "d12",
+    "name": "Dr. Meera Das",
+    "specialty": "Gynecologist",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc12.png",
+    "location": "Chittagong",
+    "experience": 9,
+    "rating": 4.6,
+    "fees": 900,
+    "about": "Expertise in prenatal care, PCOS, and minimally invasive gynecologic surgery."
+  },
+  {
+    "id": "d13",
+    "name": "Dr. Tanvir Hasan",
+    "specialty": "General Physician",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc13.png",
+    "location": "Chittagong",
+    "experience": 5,
+    "rating": 4.1,
+    "fees": 500,
+    "about": "Primary care physician with strong community health background."
+  },
+  {
+    "id": "d14",
+    "name": "Dr. Nusrat Jahan",
+    "specialty": "Dermatologist",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc14.png",
+    "location": "Chittagong",
+    "experience": 8,
+    "rating": 4.4,
+    "fees": 980,
+    "about": "Dermatologist focusing on acne, eczema, and pigmentation disorders."
+  },
+  {
+    "id": "d15",
+    "name": "Dr. Ayman Siddiqui",
+    "specialty": "Neurologist",
+    "status": "Available",
+    "image": "../assets/assets/assets_frontend/doc15.png",
+    "location": "Chittagong",
+    "experience": 7,
+    "rating": 4.3,
+    "fees": 1150,
+    "about": "Passionate about neuroimmunology and headache management."
+  }
+]

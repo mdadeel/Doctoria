@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctoria - Doctor Details</title>
+  <link rel="stylesheet" href="../style/style.css" />
+</head>
+<body>
+  <header class="header">
+    <img src="../assets/DOCTORIA.gif" alt="Doctoria Logo" style="width: 130px;" />
+    <nav>
+      <ul class="navbar-link" id="navMenu">
+        <li><a href="index.html#home">HOME</a></li>
+        <li><a href="doctors.html">ALL DOCTORS</a></li>
+      </ul>
+    </nav>
+    <div id="userMenu"></div>
+    <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+  </header>
+
+  <section class="hero-section" style="margin-top:1rem;">
+    <div class="hero-content" id="doc-info">
+      <h1 id="doc-name">Doctor</h1>
+      <p id="doc-spec">Specialty</p>
+      <p id="doc-meta"></p>
+      <p id="doc-about" style="margin-top:1rem;"></p>
+      <div style="display:flex; gap:1rem; margin-top:1.5rem; flex-wrap:wrap;">
+        <button class="btn-primary" id="book-btn">Book Appointment</button>
+        <a class="btn-primary" style="background:#4A5FE8; text-decoration:none; display:inline-block;" href="doctors.html">Back to Doctors</a>
+      </div>
+    </div>
+    <div class="header-image">
+      <img id="doc-image" src="" alt="Doctor" />
+    </div>
+  </section>
+
+  <section class="speciality-section">
+    <h2 class="section-title">Booking slots</h2>
+    <div class="form-card center">
+      <div id="doc-msg" class="msg" style="display:none;"></div>
+      <div id="day-grid" class="day-grid"></div>
+      <div id="time-grid" class="slot-grid"></div>
+      <div class="actions-row" style="margin-top:1rem;">
+        <button id="book-commit" class="btn-primary" disabled>Book an appointment</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="speciality-section">
+    <h2 class="section-title">Related Doctors</h2>
+    <p class="section-description">Simply browse through our extensive list of trusted doctors.</p>
+    <div class="doctor-grid" id="relatedGrid"></div>
+  </section>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    function showMsg(id, text, type){
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = 'msg ' + (type==='error' ? 'msg-error' : 'msg-success');
+      el.style.display = text ? 'block' : 'none';
+    }
+
+    function upcomingDays(n){
+      const out = [];
+      const names = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      const now = new Date(); now.setHours(0,0,0,0);
+      for (let i=0;i<n;i++){
+        const d = new Date(now);
+        d.setDate(now.getDate()+i);
+        out.push({ iso: d.toISOString().slice(0,10), dow: names[d.getDay()], dom: d.getDate() });
+      }
+      return out;
+    }
+
+    (async function(){
+      const params = new URLSearchParams(location.search);
+      const id = params.get('doctorId');
+      if (!id){ location.href = 'doctors.html'; return; }
+
+      const res = await fetch('../data/doctors.json');
+      const all = await res.json();
+      const doc = all.find(d => d.id === id);
+      if (!doc){ location.href = 'doctors.html'; return; }
+
+      document.getElementById('doc-name').textContent = doc.name;
+      document.getElementById('doc-spec').textContent = doc.specialty;
+      document.getElementById('doc-meta').textContent = `${doc.location} • ${doc.experience}+ yrs • ⭐ ${doc.rating} • Fee: ৳${doc.fees}`;
+      document.getElementById('doc-about').textContent = doc.about || '';
+      document.getElementById('doc-image').src = doc.image;
+      document.getElementById('doc-image').alt = doc.name;
+
+      const schedule = doc.schedule || [];
+      const allowDays = new Set(schedule.map(s=>s.day));
+
+      // Build day pills
+      const days = upcomingDays(7);
+      const dayGrid = document.getElementById('day-grid');
+      dayGrid.innerHTML = '';
+      days.forEach(d => {
+        const disabled = !allowDays.has(d.dow);
+        const div = document.createElement('div');
+        div.className = 'day' + (disabled ? ' disabled' : '');
+        div.setAttribute('data-iso', d.iso);
+        div.setAttribute('data-dow', d.dow);
+        div.innerHTML = `<span class="dow">${d.dow}</span><span class="dom">${d.dom}</span>`;
+        dayGrid.appendChild(div);
+      });
+
+      let selectedIso = '';
+      let selectedTime = '';
+
+      function renderTimesFor(day){
+        const timeGrid = document.getElementById('time-grid');
+        timeGrid.innerHTML = '';
+        selectedTime = '';
+        const rec = schedule.find(s=>s.day === day);
+        if (!rec){
+          timeGrid.innerHTML = '<span style="color:#9ca3af">No slots available</span>';
+          document.getElementById('book-commit').disabled = true;
+          return;
+        }
+        rec.slots.forEach(t => {
+          const s = document.createElement('span');
+          s.className = 'slot';
+          s.textContent = t;
+          s.addEventListener('click', () => {
+            timeGrid.querySelectorAll('.slot').forEach(x=>x.classList.remove('active'));
+            s.classList.add('active');
+            selectedTime = t;
+            document.getElementById('book-commit').disabled = !(selectedIso && selectedTime);
+          });
+          timeGrid.appendChild(s);
+        });
+        document.getElementById('book-commit').disabled = true;
+      }
+
+      dayGrid.addEventListener('click', (e) => {
+        const d = e.target.closest('.day');
+        if (!d || d.classList.contains('disabled')) return;
+        dayGrid.querySelectorAll('.day').forEach(x=>x.classList.remove('active'));
+        d.classList.add('active');
+        selectedIso = d.getAttribute('data-iso');
+        const dow = d.getAttribute('data-dow');
+        renderTimesFor(dow);
+        showMsg('doc-msg','', '');
+      });
+
+      // Preselect first valid day
+      const first = Array.from(dayGrid.querySelectorAll('.day')).find(x=>!x.classList.contains('disabled'));
+      if (first){ first.click(); }
+
+      document.getElementById('book-commit').addEventListener('click', () => {
+        const user = DOCTORIA_AUTH.getCurrentUser();
+        if (!user || user.role !== 'patient'){
+          try { DOCTORIA_AUTH.setRedirect(location.href); } catch(e){}
+          location.href = 'login.html';
+          return;
+        }
+        if (!selectedIso || !selectedTime){ showMsg('doc-msg','Please select a date and time slot','error'); return; }
+        try {
+          DOCTORIA_AUTH.bookAppointment({doctorId: doc.id, doctorName: doc.name, date: selectedIso, time: selectedTime, mode: 'online'});
+          showMsg('doc-msg','Appointment booked. Redirecting to dashboard...','success');
+          setTimeout(()=>{ location.href = 'patient-dashboard.html'; }, 800);
+        } catch(e){ showMsg('doc-msg', e.message || 'Booking failed','error'); }
+      });
+
+      // Related doctors (same specialty)
+      const related = all.filter(d => d.specialty === doc.specialty && d.id !== doc.id).slice(0, 3);
+      const rGrid = document.getElementById('relatedGrid');
+      related.forEach(r => {
+        rGrid.insertAdjacentHTML('beforeend', `
+          <div class="doctor-card" onclick="goToDoctor('${r.id}')">
+            <img src="${r.image}" alt="${r.name}">
+            <div class="doctor-info">
+              <span class="doctor-status">${r.status || 'Available'}</span>
+              <h3 class="doctor-name">${r.name}</h3>
+              <p class="doctor-specialty">${r.specialty}</p>
+            </div>
+          </div>
+        `);
+      });
+    })();
+  </script>
+</body>
+</html>

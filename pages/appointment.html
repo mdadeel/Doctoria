@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctoria - Book Appointment</title>
+  <link rel="stylesheet" href="../style/style.css" />
+</head>
+<body>
+  <header class="header">
+    <img src="../assets/DOCTORIA.gif" alt="Doctoria Logo" style="width: 130px;" />
+    <nav>
+      <ul class="navbar-link" id="navMenu">
+        <li><a href="index.html#home">HOME</a></li>
+        <li><a href="doctors.html">ALL DOCTORS</a></li>
+      </ul>
+    </nav>
+    <div id="userMenu"></div>
+    <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+  </header>
+
+  <section class="speciality-section" style="padding-top:2rem;">
+    <h2 class="section-title">Book an Appointment</h2>
+    <div class="specialty-grid" style="max-width:700px; margin:0 auto; grid-template-columns:1fr;">
+      <div class="form-card" style="text-align:left;">
+        <div id="book-msg" class="msg" style="display:none;"></div>
+        <div class="field">
+          <label>Doctor</label>
+          <select id="doctor-select" class="select"></select>
+        </div>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+          <div style="flex:1; min-width:200px;" class="field">
+            <label>Date</label>
+            <input type="date" id="appt-date" class="input" />
+          </div>
+          <div style="flex:1; min-width:200px;" class="field">
+            <label>Available Time Slots</label>
+            <select id="appt-slot" class="select"></select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Mode</label>
+          <select id="appt-mode" class="select">
+            <option value="online">Online</option>
+            <option value="offline">Offline</option>
+          </select>
+        </div>
+        <div class="actions-row">
+          <button class="btn-primary" onclick="bookNow()">Confirm Booking</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    DOCTORIA_AUTH.requireRole('patient');
+    function onLogout(){ DOCTORIA_AUTH.logout(); location.href = 'login.html'; }
+
+    function showMsg(id, text, type){
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = 'msg ' + (type==='error' ? 'msg-error' : 'msg-success');
+      el.style.display = text ? 'block' : 'none';
+    }
+
+    const params = new URLSearchParams(location.search);
+    const presetId = params.get('doctorId');
+
+    let JSON_DOCTORS = [];
+
+    function todayISO(){ const d=new Date(); d.setHours(0,0,0,0); return d.toISOString().slice(0,10); }
+    function addDays(date, n){ const d=new Date(date); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
+
+    async function loadDoctors(){
+      const res = await fetch('../data/doctors.json');
+      JSON_DOCTORS = await res.json();
+      const sel = document.getElementById('doctor-select');
+      JSON_DOCTORS.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d.id;
+        opt.textContent = `${d.name} ${d.specialty? '('+d.specialty+')':''}`;
+        sel.appendChild(opt);
+      });
+      if (presetId){ sel.value = presetId; }
+      const dateEl = document.getElementById('appt-date');
+      dateEl.min = todayISO();
+      autoPickNextAvailable();
+      syncSlots();
+    }
+
+    function dayOfWeek(dateStr){
+      const d = new Date(dateStr + 'T00:00:00');
+      return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()];
+    }
+
+    function allowedDays(doc){ return (doc.schedule||[]).map(s=>s.day); }
+    function autoPickNextAvailable(){
+      const sel = document.getElementById('doctor-select');
+      const doc = JSON_DOCTORS.find(d=>d.id===sel.value);
+      if (!doc) return;
+      const allow = allowedDays(doc);
+      if (!allow.length) return;
+      let d = todayISO();
+      for (let i=0;i<30;i++){
+        const day = dayOfWeek(d);
+        if (allow.includes(day)){ document.getElementById('appt-date').value = d; break; }
+        d = addDays(d,1);
+      }
+    }
+
+    function syncSlots(){
+      const sel = document.getElementById('doctor-select');
+      const date = document.getElementById('appt-date').value;
+      const slotSel = document.getElementById('appt-slot');
+      slotSel.innerHTML = '';
+      const doc = JSON_DOCTORS.find(d=>d.id===sel.value);
+      if (!doc) return;
+      const allow = allowedDays(doc);
+      if (!date){ return; }
+      const day = dayOfWeek(date);
+      if (!allow.includes(day)){
+        showMsg('book-msg', `Selected date is not valid. Available days: ${allow.join(', ')}`, 'error');
+        const opt = document.createElement('option'); opt.textContent = 'No slots available'; opt.value = ''; slotSel.appendChild(opt); return;
+      } else {
+        showMsg('book-msg','', '');
+      }
+      const sched = (doc.schedule||[]).find(s=>s.day===day);
+      if (!sched){
+        const opt = document.createElement('option'); opt.textContent = 'No slots available'; opt.value = ''; slotSel.appendChild(opt); return;
+      }
+      sched.slots.forEach(t=>{
+        const opt = document.createElement('option'); opt.value = t; opt.textContent = t; slotSel.appendChild(opt);
+      });
+    }
+
+    document.getElementById('doctor-select').addEventListener('change', ()=>{ autoPickNextAvailable(); syncSlots(); });
+    document.getElementById('appt-date').addEventListener('change', syncSlots);
+
+    function bookNow(){
+      const sel = document.getElementById('doctor-select');
+      const doc = JSON_DOCTORS.find(d=>d.id===sel.value);
+      const date = document.getElementById('appt-date').value;
+      const time = document.getElementById('appt-slot').value;
+      const mode = document.getElementById('appt-mode').value;
+      if (!doc || !date || !time){ showMsg('book-msg', 'Please select doctor, date and available slot', 'error'); return; }
+      try {
+        DOCTORIA_AUTH.bookAppointment({doctorId: doc.id, doctorName: doc.name, date, time, mode});
+        showMsg('book-msg', 'Appointment booked. Redirecting to dashboard...', 'success');
+        setTimeout(()=>{ location.href = 'patient-dashboard.html'; }, 800);
+      } catch(e){ showMsg('book-msg', e.message || 'Booking failed', 'error'); }
+    }
+
+    loadDoctors();
+  </script>
+</body>
+</html>

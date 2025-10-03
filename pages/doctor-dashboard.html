@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctoria - Doctor Dashboard</title>
+  <link rel="stylesheet" href="../style/style.css" />
+</head>
+<body>
+  <header class="header">
+    <img src="../assets/DOCTORIA.gif" alt="Doctoria Logo" style="width: 130px;" />
+    <nav>
+      <ul class="navbar-link" id="navMenu">
+        <li><a href="index.html#home">HOME</a></li>
+        <li><a href="doctors.html">ALL DOCTORS</a></li>
+      </ul>
+    </nav>
+    <button class="btn-primary" onclick="onLogout()">Logout</button>
+    <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+  </header>
+
+  <section class="top-doctor-section" style="min-height:60vh;">
+    <div id="dashboard-root"></div>
+  </section>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+    DOCTORIA_AUTH.requireRole('doctor');
+    function onLogout(){ DOCTORIA_AUTH.logout(); location.href = 'login.html'; }
+    DOCTORIA_DASH.renderDoctor();
+  </script>
+</body>
+</html>

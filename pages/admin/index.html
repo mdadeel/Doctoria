@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctoria - Admin Login</title>
+  <link rel="stylesheet" href="../../style/style.css" />
+</head>
+<body>
+  <header class="header">
+    <img src="../../assets/DOCTORIA.gif" alt="Doctoria Logo" style="width: 130px;" />
+    <nav>
+      <ul class="navbar-link" id="navMenu">
+        <li><a href="../index.html#home">HOME</a></li>
+        <li><a href="../doctors.html">ALL DOCTORS</a></li>
+      </ul>
+    </nav>
+    <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+  </header>
+
+  <section class="auth-wrapper">
+    <div class="auth-left bg-animated fade-in-up">
+      <div class="auth-brand">
+        <img src="../../assets/DOCTORIA.gif" alt="Doctoria" style="width:40px; border-radius:8px;" />
+        <span>Admin Portal</span>
+      </div>
+      <img src="../../assets/assets/assets_frontend/contact_image.png" alt="Admin" />
+    </div>
+    <div class="auth-right fade-in-up">
+      <div class="form-card">
+        <h3>Admin Login</h3>
+        <div id="login-msg" class="msg" style="display:none;"></div>
+        <div class="field">
+          <label>Email</label>
+          <input id="login-email" class="input" type="email" placeholder="admin@doctoria.local" />
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input id="login-password" class="input" type="password" placeholder="••••••••" />
+        </div>
+        <div class="actions-row">
+          <button class="btn-primary" onclick="onLogin()">Login</button>
+          <a class="btn-secondary" href="../login.html">Patient Login</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="../../js/main.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const u = DOCTORIA_AUTH.getCurrentUser && DOCTORIA_AUTH.getCurrentUser();
+      if (u && u.role==='admin'){ location.href = '../admin-dashboard.html'; }
+      if (u && u.role==='patient'){ location.href = '../patient-dashboard.html'; }
+    });
+    function showMsg(text, type){
+      const el = document.getElementById('login-msg');
+      el.textContent = text;
+      el.className = 'msg ' + (type==='error' ? 'msg-error' : 'msg-success');
+      el.style.display = text ? 'block' : 'none';
+    }
+    function onLogin(){
+      showMsg('', '');
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+      if (!email || !password){ showMsg('Please enter email and password','error'); return; }
+      try {
+        DOCTORIA_AUTH.login({email, password, role: 'admin'});
+        showMsg('Login successful. Redirecting...','success');
+        setTimeout(()=>{ location.href = '../admin-dashboard.html'; }, 500);
+      } catch(e){ showMsg(e.message || 'Login failed','error'); }
+    }
+  </script>
+</body>
+</html>

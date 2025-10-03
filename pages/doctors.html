@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctoria - All Doctors</title>
+  <link rel="stylesheet" href="../style/style.css" />
+</head>
+<body>
+  <header class="header">
+    <img src="../assets/DOCTORIA.gif" alt="Doctoria Logo" style="width: 130px;" />
+    <nav>
+      <ul class="navbar-link" id="navMenu">
+        <li><a href="index.html#home">HOME</a></li>
+        <li><a href="index.html#about">ABOUT</a></li>
+        <li><a href="doctors.html">ALL DOCTORS</a></li>
+        <li><a href="index.html#contact">CONTACT</a></li>
+      </ul>
+    </nav>
+    <div id="userMenu"></div>
+    <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+  </header>
+
+  <section class="speciality-section">
+    <h2 class="section-title">All Doctors</h2>
+    <div class="toolbar">
+      <div class="search-input">
+        <input id="searchInput" class="input" type="text" placeholder="Search by name or location..." />
+      </div>
+      <select id="specialtySelect" class="select">
+        <option value="">All Specialties</option>
+      </select>
+      <button id="clearFilters" class="btn-secondary">Clear</button>
+    </div>
+    <div class="doctor-grid" id="doctorGrid"></div>
+  </section>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

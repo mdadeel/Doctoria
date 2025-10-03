@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctoria - Patient Dashboard</title>
+  <link rel="stylesheet" href="../style/style.css" />
+</head>
+<body>
+  <header class="header">
+    <img src="../assets/DOCTORIA.gif" alt="Doctoria Logo" style="width: 130px;" />
+    <nav>
+      <ul class="navbar-link" id="navMenu">
+        <li><a href="index.html#home">HOME</a></li>
+        <li><a href="doctors.html">ALL DOCTORS</a></li>
+        <li><a href="patient-dashboard.html">DASHBOARD <span id="patientApptBadge" class="badge" style="display:none;"></span></a></li>
+        <li><a href="appointment.html">BOOK</a></li>
+        <li><a href="profile.html">PROFILE</a></li>
+      </ul>
+    </nav>
+    <div id="userMenu"></div>
+    <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+  </header>
+
+  <section class="top-doctor-section" style="min-height:60vh;">
+    <div id="dashboard-root"></div>
+  </section>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+    DOCTORIA_AUTH.requireRole('patient');
+    function onLogout(){ DOCTORIA_AUTH.logout(); location.href = 'login.html'; }
+    DOCTORIA_DASH.renderPatient();
+    (function updateBadge(){
+      try {
+        const appts = DOCTORIA_AUTH.listMyAppointments ? DOCTORIA_AUTH.listMyAppointments() : [];
+        const pending = appts.filter(a=>a.status==='pending').length;
+        const el = document.getElementById('patientApptBadge');
+        if (el){ if (pending>0){ el.textContent = pending; el.style.display='inline-block'; } else { el.style.display='none'; } }
+      } catch(e){}
+    })();
+  </script>
+</body>
+</html>
